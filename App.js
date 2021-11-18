@@ -1,21 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import "react-native-gesture-handler";
+import "./helpers/pre.helper";
+import React from "react";
+import * as eva from "@eva-design/eva";
+import { NavigationContainer } from "@react-navigation/native";
+import { Root } from "./components/root.component";
+import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { myTheme } from "./eva.theme";
+import { AuthContext } from "./contexts/auth.context";
+import { getAuth } from "firebase/auth";
+import { EvaIconsPack } from "@ui-kitten/eva-icons";
+
+const auth = getAuth();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <IconRegistry icons={EvaIconsPack} />
+      <SafeAreaView style={{ flex: 1 }}>
+        <ApplicationProvider {...eva} theme={myTheme}>
+          <NavigationContainer>
+            <AuthContext.Provider value={auth}>
+              <Root />
+            </AuthContext.Provider>
+          </NavigationContainer>
+        </ApplicationProvider>
+      </SafeAreaView>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
