@@ -7,11 +7,13 @@ import { Root } from "./components/root.component";
 import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { myTheme } from "./eva.theme";
-import { AuthContext } from "./contexts/auth.context";
+import { FirebaseContext } from "./contexts/firebase.context";
 import { getAuth } from "firebase/auth";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
+import { getFirestore } from "@firebase/firestore";
 
 const auth = getAuth();
+const firestore = getFirestore();
 
 export default function App() {
   return (
@@ -20,9 +22,9 @@ export default function App() {
       <SafeAreaView style={{ flex: 1 }}>
         <ApplicationProvider {...eva} theme={myTheme}>
           <NavigationContainer>
-            <AuthContext.Provider value={auth}>
+            <FirebaseContext.Provider value={{ auth, firestore }}>
               <Root />
-            </AuthContext.Provider>
+            </FirebaseContext.Provider>
           </NavigationContainer>
         </ApplicationProvider>
       </SafeAreaView>

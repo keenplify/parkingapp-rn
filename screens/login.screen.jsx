@@ -10,18 +10,18 @@ import { Formik } from "formik";
 import React, { useContext, useState } from "react";
 import * as yup from "yup";
 import { capitalizeFirstLetter } from "../helpers/capitalize.helper";
-import { login } from "../styles/login.style";
+import { forms } from "../styles/forms.style";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { AuthContext } from "../contexts/auth.context";
 import { TouchableWithoutFeedback } from "@ui-kitten/components/devsupport";
+import { FirebaseContext } from "../contexts/firebase.context";
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),
 });
 
-export function LoginScreen() {
-  const auth = useContext(AuthContext);
+export function LoginScreen({ navigation }) {
+  const { auth } = useContext(FirebaseContext);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const renderIcon = (props) => (
@@ -33,7 +33,7 @@ export function LoginScreen() {
   );
 
   return (
-    <Layout style={login.container} level="2">
+    <Layout style={forms.container} level="2">
       <Formik
         initialValues={{
           email: "",
@@ -46,10 +46,15 @@ export function LoginScreen() {
               email,
               password
             );
+
+            navigation.replace("User Menu");
           } catch (error) {
             const msg = error.message;
+            console.log(msg);
             if (msg?.includes("user-not-found"))
               return setStatus({ message: "User not found!" });
+            else if (msg?.includes("wrong-password"))
+              return setStatus({ message: "Wrong password!" });
           }
         }}
         validationSchema={schema}
@@ -64,7 +69,7 @@ export function LoginScreen() {
           isValid,
           status,
         }) => (
-          <Layout style={login.form} level="1">
+          <Layout style={forms.form} level="1">
             <Input
               label={(evaProps) => <Text {...evaProps}>Email</Text>}
               caption={capitalizeFirstLetter(errors.email)}
@@ -72,6 +77,7 @@ export function LoginScreen() {
               onChangeText={handleChange("email")}
               onBlur={handleBlur("email")}
               value={values.email}
+              style={forms.control}
             />
             <Input
               label={(evaProps) => <Text {...evaProps}>Password</Text>}
@@ -82,8 +88,9 @@ export function LoginScreen() {
               onChangeText={handleChange("password")}
               onBlur={handleBlur("password")}
               value={values.password}
+              style={forms.control}
             />
-            <Divider style={login.divider} />
+            <Divider style={forms.divider} />
             <Button
               onPress={handleSubmit}
               disabled={isSubmitting || !isValid}
@@ -92,7 +99,7 @@ export function LoginScreen() {
               Login
             </Button>
             {status && (
-              <Text status="danger" category="c1" style={login.status}>
+              <Text status="danger" category="c1" style={forms.status}>
                 {status.message}
               </Text>
             )}

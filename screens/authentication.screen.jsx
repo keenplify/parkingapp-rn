@@ -18,7 +18,10 @@ const BottomTabBar = ({ navigation, state }) => (
 
 export function AuthenticationScreen() {
   return (
-    <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
+    <Navigator
+      tabBar={(props) => <BottomTabBar {...props} />}
+      screenOptions={{ headerShown: false }}
+    >
       <Screen name="Login" component={LoginScreen} />
       <Screen name="Register" component={RegisterScreen} />
     </Navigator>
