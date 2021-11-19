@@ -14,7 +14,7 @@ export function UserMenuScreen({ navigation }) {
 
   return (
     <Layout style={userMenu.container}>
-      <Text>Welcome, {user?.fullname}</Text>
+      <Text>Welcome, {user?.fullname}! What would you like to do?</Text>
       <Button
         style={userMenu.button}
         accessoryLeft={<Icon name="plus-outline" />}
@@ -25,12 +25,14 @@ export function UserMenuScreen({ navigation }) {
       <Button
         style={userMenu.button}
         accessoryLeft={<Icon name="eye-outline" />}
+        onPress={() => navigation.navigate("My Bookings")}
       >
         View Booking
       </Button>
       <Button
         style={userMenu.button}
         accessoryLeft={<Icon name="close-outline" />}
+        onPress={() => navigation.navigate("Cancel Booking")}
       >
         Cancel Booking
       </Button>

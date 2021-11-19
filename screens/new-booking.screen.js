@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { addDoc, collection, doc, setDoc } from "@firebase/firestore";
 import { ToastAndroid } from "react-native";
 import { NewBookingForm } from "../components/new-booking-form.component";
+import { useUser } from "../helpers/user.helper";
 
 const schema = yup.object().shape({
   date: yup.date().required(),
@@ -14,7 +15,9 @@ const schema = yup.object().shape({
   slot: yup.number().min(1).required(),
 });
 
-export function NewBookingScreen() {
+export function NewBookingScreen({ navigation }) {
+  const { firestore, user } = useUser();
+
   return (
     <ScrollView>
       <Layout style={forms.container}>
@@ -26,11 +29,13 @@ export function NewBookingScreen() {
           }}
           onSubmit={async (values, actions) => {
             try {
-              const newDoc = await addDoc(collection(firestore, "booking"), {
+              await addDoc(collection(firestore, "booking"), {
                 ...values,
+                user: user,
               });
 
               ToastAndroid.show("Successfully booked.", ToastAndroid.LONG);
+              navigation.navigate("My Bookings");
             } catch (error) {
               console.log(error);
             }

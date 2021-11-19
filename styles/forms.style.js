@@ -29,7 +29,7 @@ export const forms = StyleSheet.create({
   },
   form: {
     width: "80%",
-    padding: "5%",
+    padding: "2%",
     borderRadius: 4,
   },
   divider: {

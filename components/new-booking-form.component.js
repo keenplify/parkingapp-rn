@@ -8,8 +8,8 @@ import { useState } from "react";
 import { useUser } from "../helpers/user.helper";
 import { forms } from "../styles/forms.style";
 import { collection, getDocs } from "@firebase/firestore";
-
-const SLOTS = 6;
+import { PRICEPERHOUR, SLOTS } from "../helpers/constants.helper";
+import { general } from "../styles/general.style";
 
 export function NewBookingForm({ formik }) {
   const {
@@ -22,7 +22,7 @@ export function NewBookingForm({ formik }) {
     handleBlur,
     handleSubmit,
   } = formik;
-  const { firestore, auth } = useUser();
+  const { firestore } = useUser();
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState("date");
   const [disabledSlots, setDisabledSlots] = useState([]);
@@ -58,7 +58,7 @@ export function NewBookingForm({ formik }) {
         const minDate = dayjs(data.date.seconds * 1000);
         const maxDate = minDate.add(Number.parseInt(data.duration), "hours");
 
-        if (currentMinDate <= maxDate && maxDate <= currentMaxDate) {
+        if (currentMinDate <= maxDate && currentMaxDate >= minDate) {
           typeof _disabledSlots.find((v) => v == data.slot) === "undefined" &&
             _disabledSlots.push(data.slot);
         }
@@ -83,7 +83,7 @@ export function NewBookingForm({ formik }) {
         <DateTimePicker
           value={values.date}
           onChange={(event, selectedDate) => {
-            const currentDate = selectedDate || date;
+            const currentDate = selectedDate || values.date;
             setShow(Platform.OS === "ios");
             setFieldValue("date", currentDate);
           }}
@@ -169,6 +169,14 @@ export function NewBookingForm({ formik }) {
               </Card>
             );
           })}
+        </Layout>
+        <Layout style={general.centerHFlex}>
+          <Text style={general.labelText}>Current Price:</Text>
+          <Text>₱{Number.parseInt(values.duration) * PRICEPERHOUR}</Text>
+        </Layout>
+        <Layout style={general.centerHFlex}>
+          <Text style={general.labelText}>Selected Slot Number:</Text>
+          <Text>{values.slot}</Text>
         </Layout>
         <Button
           onPress={handleSubmit}

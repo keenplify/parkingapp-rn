@@ -24,4 +24,8 @@ const firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
-LogBox.ignoreLogs(["AsyncStorage", "Setting a timer"]);
+LogBox.ignoreLogs([
+  "AsyncStorage",
+  "Setting a timer",
+  "Can't perform a React state update on an unmounted component.",
+]);
