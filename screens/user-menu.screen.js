@@ -6,6 +6,12 @@ import { userMenu } from "../styles/user-menu.style";
 
 export function UserMenuScreen({ navigation }) {
   const { user, auth } = useUser();
+  const [userData, setUserData] = useState(user?.data());
+
+  useEffect(() => {
+    const data = user?.data();
+    setUserData(data);
+  }, [user]);
 
   const handleSignOut = () => {
     signOut(auth);
@@ -14,7 +20,7 @@ export function UserMenuScreen({ navigation }) {
 
   return (
     <Layout style={userMenu.container}>
-      <Text>Welcome, {user?.fullname}! What would you like to do?</Text>
+      <Text>Welcome, {userData?.fullname}! What would you like to do?</Text>
       <Button
         style={userMenu.button}
         accessoryLeft={<Icon name="plus-outline" />}
@@ -27,14 +33,14 @@ export function UserMenuScreen({ navigation }) {
         accessoryLeft={<Icon name="eye-outline" />}
         onPress={() => navigation.navigate("My Bookings")}
       >
-        View Booking
+        View Bookings
       </Button>
       <Button
         style={userMenu.button}
         accessoryLeft={<Icon name="close-outline" />}
         onPress={() => navigation.navigate("Cancel Booking")}
       >
-        Cancel Booking
+        Cancel Bookings
       </Button>
       <Button
         style={userMenu.button}

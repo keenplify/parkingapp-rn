@@ -1,31 +1,20 @@
-import {
-  collection,
-  getDocs,
-  getDoc,
-  doc,
-  deleteDoc,
-} from "@firebase/firestore";
+import { doc, deleteDoc } from "@firebase/firestore";
 import { Button, Layout } from "@ui-kitten/components";
 import React, { useEffect, useState } from "react";
 import { ScrollView, ToastAndroid, View } from "react-native";
 import { BookingCardComponent } from "../components/booking-card.component";
+import { FetchMyBookings } from "../helpers/fetch-booking.helper";
 import { useUser } from "../helpers/user.helper";
-import { useRefetchOnFocus } from "../helpers/useRefetchOnFocus.helper";
 
 import { general } from "../styles/general.style";
 
 export function CancelBookingScreen({ navigation }) {
-  const { firestore } = useUser();
+  const { firestore, auth } = useUser();
   const [bookings, setBookings] = useState([]);
   const [selectedBooking, setSelectedBooking] = useState();
 
-  const Fetch = async () => {
-    const _bookings = await getDocs(collection(firestore, "booking"));
-    setBookings(_bookings.docs);
-  };
-
   useEffect(() => {
-    Fetch();
+    FetchMyBookings(firestore, setBookings, auth);
   }, [bookings]);
 
   const handlePress = (booking) => {

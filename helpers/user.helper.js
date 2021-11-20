@@ -9,7 +9,7 @@ export function useUser() {
   useEffect(() => {
     if (auth?.currentUser) {
       getDoc(doc(firestore, "users", auth.currentUser.uid)).then((res) =>
-        setUser(res.data())
+        setUser(res)
       );
     }
   }, [auth, firestore]);

@@ -16,7 +16,7 @@ const schema = yup.object().shape({
 });
 
 export function NewBookingScreen({ navigation }) {
-  const { firestore, user } = useUser();
+  const { firestore, auth } = useUser();
 
   return (
     <ScrollView>
@@ -31,11 +31,11 @@ export function NewBookingScreen({ navigation }) {
             try {
               await addDoc(collection(firestore, "booking"), {
                 ...values,
-                user: user,
+                userId: auth.currentUser.uid,
               });
 
               ToastAndroid.show("Successfully booked.", ToastAndroid.LONG);
-              navigation.navigate("My Bookings");
+              navigation.replace("My Bookings");
             } catch (error) {
               console.log(error);
             }

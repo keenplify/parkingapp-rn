@@ -75,6 +75,10 @@ export function RegisterScreen({ navigation }) {
                 return setErrors({
                   email: "The email you provided is already in use.",
                 });
+              else
+                return setStatus({
+                  message: "Unable to register. Please try again.",
+                });
             }
           }}
           validationSchema={schema}

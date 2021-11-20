@@ -39,7 +39,7 @@ export function LoginScreen({ navigation }) {
           email: "",
           password: "",
         }}
-        onSubmit={async ({ email, password }, { setStatus }) => {
+        onSubmit={async ({ email, password }, { setStatus, setErrors }) => {
           try {
             const result = await signInWithEmailAndPassword(
               auth,
@@ -52,9 +52,15 @@ export function LoginScreen({ navigation }) {
             const msg = error.message;
             console.log(msg);
             if (msg?.includes("user-not-found"))
-              return setStatus({ message: "User not found!" });
+              return setErrors({
+                email: "User with specified email does not exist.",
+              });
             else if (msg?.includes("wrong-password"))
-              return setStatus({ message: "Wrong password!" });
+              return setErrors({ password: "Wrong password" });
+            else
+              return setStatus({
+                message: "Unable to login. Please try again.",
+              });
           }
         }}
         validationSchema={schema}
