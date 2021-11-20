@@ -47,7 +47,7 @@ export function RegisterScreen({ navigation }) {
             email: "",
             password: "",
           }}
-          onSubmit={async (values, { setStatus }) => {
+          onSubmit={async (values, { setStatus, setErrors }) => {
             try {
               const result = await createUserWithEmailAndPassword(
                 auth,
@@ -68,8 +68,12 @@ export function RegisterScreen({ navigation }) {
               if (msg?.includes("user-not-found"))
                 return setStatus({ message: "User not found!" });
               else if (msg?.includes("weak-password"))
-                return setStatus({
-                  message: "Password should be at least 6 characters",
+                return setErrors({
+                  message: "Password should be at least 6 characters.",
+                });
+              else if (msg?.includes("email-already-in-use"))
+                return setErrors({
+                  email: "The email you provided is already in use.",
                 });
             }
           }}
