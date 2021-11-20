@@ -14,6 +14,8 @@ import { forms } from "../styles/forms.style";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { TouchableWithoutFeedback } from "@ui-kitten/components/devsupport";
 import { FirebaseContext } from "../contexts/firebase.context";
+import { Image } from "react-native";
+import { general } from "../styles/general.style";
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -33,7 +35,11 @@ export function LoginScreen({ navigation }) {
   );
 
   return (
-    <Layout style={forms.container} level="2">
+    <Layout style={forms.container} level="3">
+      <Image
+        source={require("../assets/icon.png")}
+        style={general.splashImage}
+      />
       <Formik
         initialValues={{
           email: "",

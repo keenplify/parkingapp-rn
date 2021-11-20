@@ -6,6 +6,9 @@ export const forms = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  main: {
+    flexGrow: 1,
+  },
   containerTwoColumn: {
     flex: 1,
     flexDirection: "row",

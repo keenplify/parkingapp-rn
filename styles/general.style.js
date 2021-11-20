@@ -30,4 +30,5 @@ export const general = StyleSheet.create({
     justifyContent: "center",
   },
   splashImage: { width: 128, height: 128, marginBottom: 24 },
+  menuLogo: { width: 192, height: 192, marginBottom: 24 },
 });
