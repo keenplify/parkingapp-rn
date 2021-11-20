@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
 import { FirebaseContext } from "../contexts/firebase.context";
+import { onValue, ref } from "firebase/database";
 
 export function useUser() {
-  const { auth, firestore } = useContext(FirebaseContext);
+  const { auth, firestore, database } = useContext(FirebaseContext);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (auth?.currentUser) {
-      getDoc(doc(firestore, "users", auth.currentUser.uid)).then((res) =>
-        setUser(res)
-      );
+      onValue(ref(database, "users/" + auth.currentUser.uid), (snapshot) => {
+        setUser(snapshot);
+      });
     }
-  }, [auth, firestore]);
+  }, [auth, database]);
 
-  return { user, auth, firestore };
+  return { user, auth, firestore, database };
 }

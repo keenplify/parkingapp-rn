@@ -15,7 +15,7 @@ const firebase = {
 const firebaseConfig = {
   apiKey: "AIzaSyBch3iXgGihoyCe5BgV4mXmFmm-Cv7JKiQ",
   authDomain: `${firebase.projectId}.firebaseapp.com`,
-  databaseURL: `https://${firebase.projectId}.firebaseio.com`,
+  databaseURL: `https://parkingapp-f73f1-default-rtdb.asia-southeast1.firebasedatabase.app/`,
   projectId: firebase.projectId,
   storageBucket: "project-id.appspot.com",
   messagingSenderId: "sender-id",

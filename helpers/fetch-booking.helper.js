@@ -1,12 +1,9 @@
-import { collection, getDocs, query, where } from "@firebase/firestore";
+import { get, ref } from "firebase/database";
 
-export const FetchMyBookings = async (firestore, setBookings, auth) => {
-  const _bookings = await getDocs(
-    query(
-      collection(firestore, "booking"),
-      where("userId", "==", auth.currentUser.uid)
-    )
+export const FetchMyBookings = async (database, setBookings, auth) => {
+  const snapshot = await get(
+    ref(database, "bookings/" + auth.currentUser.uid + "/")
   );
 
-  setBookings(_bookings.docs);
+  return setBookings(snapshot.val());
 };

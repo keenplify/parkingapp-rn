@@ -11,9 +11,11 @@ import { FirebaseContext } from "./contexts/firebase.context";
 import { getAuth } from "firebase/auth";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import { getFirestore } from "@firebase/firestore";
+import { getDatabase } from "@firebase/database";
 
 const auth = getAuth();
 const firestore = getFirestore();
+const database = getDatabase();
 
 export default function App() {
   return (
@@ -22,7 +24,7 @@ export default function App() {
       <SafeAreaView style={{ flex: 1 }}>
         <ApplicationProvider {...eva} theme={myTheme}>
           <NavigationContainer>
-            <FirebaseContext.Provider value={{ auth, firestore }}>
+            <FirebaseContext.Provider value={{ auth, firestore, database }}>
               <Root />
             </FirebaseContext.Provider>
           </NavigationContainer>

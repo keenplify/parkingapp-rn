@@ -16,6 +16,7 @@ import { FirebaseContext } from "../contexts/firebase.context";
 import { capitalizeFirstLetter } from "../helpers/capitalize.helper";
 import { TouchableWithoutFeedback } from "@ui-kitten/components/devsupport";
 import { ScrollView } from "react-native";
+import { ref, set } from "firebase/database";
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -26,7 +27,7 @@ const schema = yup.object().shape({
 });
 
 export function RegisterScreen({ navigation }) {
-  const { auth, firestore } = useContext(FirebaseContext);
+  const { auth, firestore, database } = useContext(FirebaseContext);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const renderIcon = (props) => (
@@ -49,6 +50,7 @@ export function RegisterScreen({ navigation }) {
           }}
           onSubmit={async (values, { setStatus, setErrors }) => {
             try {
+              console.log("submitting...");
               const result = await createUserWithEmailAndPassword(
                 auth,
                 values.email,
@@ -57,7 +59,7 @@ export function RegisterScreen({ navigation }) {
 
               const { password, email, ...stripped } = values;
 
-              await setDoc(doc(firestore, "users", result.user.uid), {
+              set(ref(database, "users/" + result.user.uid), {
                 ...stripped,
               });
 

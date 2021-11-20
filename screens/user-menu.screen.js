@@ -6,10 +6,10 @@ import { userMenu } from "../styles/user-menu.style";
 
 export function UserMenuScreen({ navigation }) {
   const { user, auth } = useUser();
-  const [userData, setUserData] = useState(user?.data());
+  const [userData, setUserData] = useState(user?.val());
 
   useEffect(() => {
-    const data = user?.data();
+    const data = user?.val();
     setUserData(data);
   }, [user]);
 

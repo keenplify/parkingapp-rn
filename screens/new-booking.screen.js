@@ -4,7 +4,7 @@ import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { forms } from "../styles/forms.style";
 import * as yup from "yup";
-import { addDoc, collection, doc, setDoc } from "@firebase/firestore";
+import { ref, push } from "firebase/database";
 import { ToastAndroid } from "react-native";
 import { NewBookingForm } from "../components/new-booking-form.component";
 import { useUser } from "../helpers/user.helper";
@@ -16,7 +16,7 @@ const schema = yup.object().shape({
 });
 
 export function NewBookingScreen({ navigation }) {
-  const { firestore, auth } = useUser();
+  const { database, auth } = useUser();
 
   return (
     <ScrollView>
@@ -29,9 +29,9 @@ export function NewBookingScreen({ navigation }) {
           }}
           onSubmit={async (values, actions) => {
             try {
-              await addDoc(collection(firestore, "booking"), {
+              push(ref(database, "bookings/" + auth.currentUser.uid + "/"), {
                 ...values,
-                userId: auth.currentUser.uid,
+                date: values.date.getTime(),
               });
 
               ToastAndroid.show("Successfully booked.", ToastAndroid.LONG);

@@ -7,7 +7,7 @@ import { capitalizeFirstLetter } from "../helpers/capitalize.helper";
 import { useState } from "react";
 import { useUser } from "../helpers/user.helper";
 import { forms } from "../styles/forms.style";
-import { collection, getDocs } from "@firebase/firestore";
+import { ref, get } from "firebase/database";
 import { PRICEPERHOUR, SLOTS } from "../helpers/constants.helper";
 import { general } from "../styles/general.style";
 
@@ -22,7 +22,7 @@ export function NewBookingForm({ formik }) {
     handleBlur,
     handleSubmit,
   } = formik;
-  const { firestore } = useUser();
+  const { database } = useUser();
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState("date");
   const [disabledSlots, setDisabledSlots] = useState([]);
@@ -43,9 +43,16 @@ export function NewBookingForm({ formik }) {
   const fetchBookings = async () => {
     try {
       // https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
-      const booking = await getDocs(collection(firestore, "booking"));
+      const bookingSnapshot = await get(ref(database, "bookings/"));
 
-      const data = booking.docs.map((doc) => doc.data());
+      let data = [];
+
+      Object.values(bookingSnapshot.val()).forEach((e) =>
+        Object.values(e).forEach((v) => {
+          data.push(v);
+        })
+      );
+
       let _disabledSlots = [];
 
       const currentMinDate = dayjs(values.date);
@@ -55,7 +62,7 @@ export function NewBookingForm({ formik }) {
       );
 
       data.forEach((data) => {
-        const minDate = dayjs(data.date.seconds * 1000);
+        const minDate = dayjs(data.date);
         const maxDate = minDate.add(Number.parseInt(data.duration), "hours");
 
         if (currentMinDate <= maxDate && currentMaxDate >= minDate) {
