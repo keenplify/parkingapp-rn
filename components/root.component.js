@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 
 export const Root = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Splash">
       <Stack.Screen
         name="Splash"
         component={Splash}

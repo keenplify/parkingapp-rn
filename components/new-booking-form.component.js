@@ -86,6 +86,7 @@ export function NewBookingForm({ formik }) {
             const currentDate = selectedDate || values.date;
             setShow(Platform.OS === "ios");
             setFieldValue("date", currentDate);
+            fetchBookings();
           }}
           mode={mode}
         />

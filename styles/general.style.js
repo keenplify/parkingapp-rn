@@ -24,4 +24,10 @@ export const general = StyleSheet.create({
   scrollView: {
     height: Dimensions.get("window").height - 125,
   },
+  centerFlex: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  splashImage: { width: 128, height: 128, marginBottom: 24 },
 });
